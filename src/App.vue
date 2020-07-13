@@ -1,28 +1,43 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" @click="getClickTime">
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import { setCookie } from './public/pubFunction'
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  data(){
+    return {
+      clickTime: "",
+      outTime: 30*10*1000,// 超时时间
+    }
+  },
+  methods: {
+    // 超时重新登录
+    getClickTime(){
+      if(location.href.indexOf('/login')!=-1){
+        return
+      }
+      if(this.clickTime && (new Date().getTime() - this.clickTime > this.outTime)){
+        this.clickTime = new Date().getTime()
+        setCookie("token","")
+        this.$router.push("/login")
+      }else{
+        this.clickTime = new Date().getTime()
+      }
+    }
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang='less'>
+* {
+  padding: 0;
+  margin: 0;
+}
+#app{
+  min-height:100vh;
 }
 </style>
