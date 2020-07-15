@@ -1,17 +1,16 @@
 <template>
-    <div>
-        {{msg}}
-    </div>
+  <div>
+    {{ msg }}
+  </div>
 </template>
 <script>
-import route from '../../router/index'
+import route from "../../router/index";
 export default {
-    data(){
-        return {
-            msg:"123"
-        }
-    },
-    mounted() {
-    },
-}
+  data() {
+    return {
+      msg: "123"
+    };
+  },
+  mounted() {}
+};
 </script>

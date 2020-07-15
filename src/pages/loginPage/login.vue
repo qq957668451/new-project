@@ -12,13 +12,23 @@
       </div>
       <div class="inputbox">
         <img src="../../images/loginPage/password.png" alt />
-        <el-input placeholder="请输入密码" v-model="passWord" show-password></el-input>
+        <el-input
+          placeholder="请输入密码"
+          v-model="passWord"
+          show-password
+        ></el-input>
       </div>
       <div class="remember">
         <el-checkbox v-model="remPassword">记住密码</el-checkbox>
       </div>
       <div class="btnBox">
-        <el-button style="width:100%" type="primary" :loading="loading" @click="toLogin">登 录</el-button>
+        <el-button
+          style="width:100%"
+          type="primary"
+          :loading="loading"
+          @click="toLogin"
+          >登 录</el-button
+        >
       </div>
       <div class="forget">
         <span>忘记密码</span>
@@ -28,34 +38,42 @@
 </template>
 <script>
 import store from "../../store/index";
-import { funLocalstorage,setCookie,getCookie } from "../../public/pubFunction";
-import {toLogin} from '../../api/login.js'
+import {
+  funLocalstorage,
+  setCookie,
+  getCookie
+} from "../../public/pubFunction";
+import { toLogin } from "../../api/login.js";
 export default {
   data() {
     return {
       userName: "",
       passWord: "",
-      redirect:"",
-      otherQuery:"",
+      redirect: "",
+      otherQuery: "",
       remPassword: true,
-      loading:false
+      loading: false
     };
   },
   mounted() {
-    if(getCookie('token')){
-      this.$router.push('/')
-      return
+    if (getCookie("token")) {
+      this.$router.push("/");
+      return;
     }
-    funLocalstorage.get('userName')?this.userName = funLocalstorage.get('userName'):''
-    funLocalstorage.get('passWord')?this.passWord = funLocalstorage.get('passWord'):''
+    funLocalstorage.get("userName")
+      ? (this.userName = funLocalstorage.get("userName"))
+      : "";
+    funLocalstorage.get("passWord")
+      ? (this.passWord = funLocalstorage.get("passWord"))
+      : "";
   },
   watch: {
     $route: {
       handler: function(route) {
-        const query = route.query
+        const query = route.query;
         if (query) {
-          this.redirect = query.redirect
-          this.otherQuery = this.getOtherQuery(query)
+          this.redirect = query.redirect;
+          this.otherQuery = this.getOtherQuery(query);
         }
       },
       immediate: true
@@ -64,30 +82,39 @@ export default {
   methods: {
     toLogin() {
       if (this.userName && this.passWord) {
-        this.loading = true
-        store.dispatch('user/login', { userName: this.userName, passWord: this.passWord }).then((res) => {
-          this.loading = false
-          this.$message.success('登录成功')
-          this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-        }).catch((err) => {
-          this.loading = false
-          this.$message.error(err.message)
-          this.userName=''
-          this.passWord=''
-          funLocalstorage.remove('userName')
-          funLocalstorage.remove('passWord')
-        })
-        } else {
-            this.$message.error('请填写账号密码')
-        }
+        this.loading = true;
+        store
+          .dispatch("user/login", {
+            userName: this.userName,
+            passWord: this.passWord
+          })
+          .then(res => {
+            this.loading = false;
+            this.$message.success("登录成功");
+            this.$router.push({
+              path: this.redirect || "/",
+              query: this.otherQuery
+            });
+          })
+          .catch(err => {
+            this.loading = false;
+            this.$message.error(err.message);
+            this.userName = "";
+            this.passWord = "";
+            funLocalstorage.remove("userName");
+            funLocalstorage.remove("passWord");
+          });
+      } else {
+        this.$message.error("请填写账号密码");
+      }
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
-        if (cur !== 'redirect') {
-          acc[cur] = query[cur]
+        if (cur !== "redirect") {
+          acc[cur] = query[cur];
         }
-        return acc
-      }, {})
+        return acc;
+      }, {});
     }
   }
 };
