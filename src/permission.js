@@ -24,7 +24,8 @@ router.beforeEach(async (to, from, next) => {
                     const { roles } = await store.dispatch('user/getUserInfo')
                     const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
                     router.addRoutes(accessRoutes)
-                    next({ ...to, replace: true })
+                    next()
+                    // next({ ...to, replace: true })
                 } catch {
                     next(`/login?redirect=${to.path}`)
                 }
