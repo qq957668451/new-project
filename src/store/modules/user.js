@@ -1,12 +1,5 @@
-import {
-  getUserInfo,
-  toLogin
-} from '../../api/login';
-import {
-  getCookie,
-  setCookie,
-  funLocalstorage
-} from '../../public/pubFunction'
+import { getUserInfo, toLogin } from '../../api/login';
+import { getCookie, setCookie, funLocalstorage } from '../../public/pubFunction'
 import { Message } from 'element-ui';
 const state = {
   token: getCookie('token'),
@@ -35,59 +28,40 @@ const mutations = {
 
 const actions = {
   // user login
-  login({
-    commit
-  }, userInfo) {
-    const {
-      userName,
-      passWord
-    } = userInfo
+  login({ commit }, userInfo) {
+    const { userName, passWord } = userInfo
     return new Promise((resolve, reject) => {
       toLogin({
         userName: userName.trim(),
         passWord: passWord
       }).then(response => {
-        const {
-          data
-        } = response
-        if(data){
+        const { data } = response
+        if (data) {
           commit('SET_TOKEN', data.token)
           setCookie('token', data.token)
-          funLocalstorage.set("userName",userName)
-          funLocalstorage.set("passWord",passWord)
+          funLocalstorage.set("userName", userName)
+          funLocalstorage.set("passWord", passWord)
           resolve(response)
-        }else{
+        } else {
           reject(response)
         }
       }).catch(error => {
         reject(error)
       })
-    }).catch((e) => {})
+    }).catch((e) => { })
   },
   // 获取用户信息
-  getUserInfo({
-    commit,
-    state
-  }) {
+  getUserInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getUserInfo({token:state.token}).then(response => {
-        const {
-          data
-        } = response
+      getUserInfo({ token: state.token }).then(response => {
+        const { data } = response
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-        const {
-          roles,
-          name,
-          avatar,
-          introduction
-        } = data
-
+        const { roles, name, avatar, introduction } = data
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
-
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
@@ -96,18 +70,16 @@ const actions = {
       }).catch(error => {
         reject(error)
       })
-    }).catch((e) => {})
+    }).catch((e) => { })
   },
   // remove token
-  resetToken({
-    commit
-  }) {
+  resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
       // removeToken()
       resolve()
-    }).catch((e) => {})
+    }).catch((e) => { })
   },
 }
 

@@ -1,14 +1,14 @@
 <template>
-    <div>
-        {{msg}}
-    </div>
+  <div>
+    {{ msg }}
+  </div>
 </template>
 <script>
 export default {
-    data(){
-        return{
-            msg:"个人设置"
-        }
-    }
-}
+  data() {
+    return {
+      msg: "个人设置"
+    };
+  }
+};
 </script>

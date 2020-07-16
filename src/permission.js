@@ -17,10 +17,10 @@ router.beforeEach(async (to, from, next) => {
         } else {
             // 获取roles 查看可以访问的页面，如果roles.indexOf(to.path),执行next(),如果roles.indexOf(to.path),进行拦截，跳转到404
             const hasRoles = store.getters.roles && store.getters.roles.length > 0
-            if(hasRoles){
+            if (hasRoles) {
                 next()
-            }else{
-                try{
+            } else {
+                try {
                     const { roles } = await store.dispatch('user/getUserInfo')
                     const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
                     router.addRoutes(accessRoutes)
@@ -30,7 +30,7 @@ router.beforeEach(async (to, from, next) => {
                 }
             }
         }
-    // 没有token 重定向到登录页面
+        // 没有token 重定向到登录页面
     } else {
         if (whiteList.indexOf(to.path) !== -1) {
             next()
