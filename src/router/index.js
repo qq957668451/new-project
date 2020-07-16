@@ -15,8 +15,11 @@ export const RouterList = [{
 
 }, {
     path: "/",
-    component: () => import("../pages/homePage/index"),
+    component: () => import("../pages/index"),
     name: "首页",
+    meta: {
+        titile: '首页',
+    },
 }];
 
 export const asyncRoutes = [{
