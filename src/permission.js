@@ -5,7 +5,6 @@ import store from './store/index'
 const whiteList = ['/login']
 
 router.beforeEach(async (to, from, next) => {
-    console.log("222233333",to);
     // 判断是否是已登录
     const hasToken = getCookie('token')
     // 有token代表已登录正常跳转，

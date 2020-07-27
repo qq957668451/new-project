@@ -22,8 +22,6 @@ export default {
     }
   },
   mounted() {
-    console.log('222',this.lastData);
-    console.log('path',this.path);
   },
 }
 </script>

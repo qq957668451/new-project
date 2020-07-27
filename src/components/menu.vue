@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-           <menu-two v-for="item in routerList" :data="item" :key="item.path" v-if="!item.hidden"></menu-two>
+           <menu-two v-for="item in routerList" :data="item" :key="item.path" v-if="!item.hidden && item.children && item.children.length>0"></menu-two>
         </el-menu>
         <router-view></router-view>
     </div>
