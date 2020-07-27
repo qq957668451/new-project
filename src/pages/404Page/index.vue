@@ -9,8 +9,6 @@ export default {
     return {};
   },
   mounted() {
-    console.log("router", router);
-    console.log("store", store.state);
   }
 };
 </script>

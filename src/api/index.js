@@ -22,7 +22,7 @@ serviece.interceptors.request.use(
     });
     let token = getCookie('token');
     if (token) {
-      request.headers['jwt-token'] = token;
+      request.headers['token'] = token;
     }
     return request;
   },

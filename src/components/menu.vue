@@ -1,29 +1,45 @@
 <template>
     <div>
-        <el-menu class="el-menu-demo" mode="horizontal">
-            <el-menu-item v-for="(item,index) in routerList" :index="item.path" v-if="!item.hidden">
-                <router-link :to="item.path">{{item.meta.titile}}</router-link>
-            </el-menu-item>
-            <el-menu-item index="3">消息中心</el-menu-item>
-            <el-menu-item index="4">订单管理</el-menu-item>
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+           <menu-two v-for="item in routerList" :data="item" :key="item.path" v-if="!item.hidden"></menu-two>
         </el-menu>
+        <router-view></router-view>
     </div>
 </template>
 <script>
-import itemsMenu from "./menuItem"
+import menuTwo from "./menuItem"
 
 export default {
-    components:{
-        itemsMenu
+    name:"MenuOne",
+    components:{menuTwo},
+    data() {
+      return {
+        activeIndex:"1",
+        routerList: []
+      };
     },
-    data(){
-        return{
-            routerList: []
-        }
+    methods: {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+        // var path = ''
+        // keyPath.map((item,index)=>{
+        //     path += (item+'/')
+        // })
+        // path = path.substr(0,path.length-1)
+        // console.log("path",path);
+      },
+      routerChange(router){
+        this.$router.push(router)
+      }
     },
     mounted() {
-        this.routerList = this.$store.state.permission.routes
-        // console.log('store',this.$store.state.permission.routes);
+        this.routerList = this.$store.state.permission.addRoutes
+        console.log(this.routerList);
     },
+    computed: {
+        isShow:()=>{
+            return true
+        }
+    }
 }
 </script>

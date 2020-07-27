@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Menu from "../components/menu"
 
 Vue.use(VueRouter);
 
@@ -13,36 +14,57 @@ export const RouterList = [{
     component: () => import("../pages/loginPage/login"),
     hidden: true
 
-}, {
-    path: "/",
-    component: () => import("../pages/index"),
-    name: "首页",
-    meta: {
-        titile: '首页',
-    },
 }];
 
 export const asyncRoutes = [{
-    path: '/user',
-    name: "用户管理",
-    component: () => import("../pages/userPage/index"),
-    meta: {
-        titile: '用户管理',
-        roles: ["admin"]
-    },
+    path: '/',
+    component: Menu,
+    redirect: '/home',
+    name: "主页",
+    children: [{
+        path: 'home',
+        name: '主页',
+        component: () => import('../pages/homePage/index'),
+        meta: {
+            title: '主页'
+        }
+    }]
 }, {
-    path: "/sitting",
+    path: '/user',
+    component: Menu,
+    redirect: '/user/index',
+    name: "用户管理",
+    children: [{
+        path: 'index',
+        name: "用户管理",
+        component: () => import("../pages/userPage/index"),
+        meta: {
+            titile: '用户管理',
+            roles: ["admin"]
+        },
+    }]
+}, {
+    path: '/sitting',
+    component: Menu,
+    redirect: '/sitting/index',
     name: "个人设置",
-    component: () => import("../pages/settingPage/index"),
-    meta: {
-        titile: "个人设置"
-    }
+    children: [{
+        path: "index",
+        name: "个人设置",
+        component: () => import("../pages/settingPage/index"),
+        meta: {
+            titile: "个人设置"
+        }
+    }]
 }, {
     path: '*',
     redirect: '/404',
     hidden: true
 }]
-
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
 export default new VueRouter({
     mode: 'history',
     routes: RouterList

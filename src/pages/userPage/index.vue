@@ -1,6 +1,5 @@
 <template>
   <div>
-    123
     {{ msg }}
   </div>
 </template>
@@ -14,8 +13,6 @@ export default {
     };
   },
   mounted() {
-    console.log("router", router);
-    console.log("store", store);
   }
 };
 </script>
